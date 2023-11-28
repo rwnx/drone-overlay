@@ -14,6 +14,10 @@ config/name="drone-overlay"
 config/features=PackedStringArray("4.1", "Forward Plus")
 config/icon="res://icon.svg"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/coi_serviceworker/plugin.cfg")
+
 [xr]
 
 shaders/enabled=true
