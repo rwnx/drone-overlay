@@ -19,8 +19,6 @@ func _ready() -> void:
 		# (which we connected to the "session_supported" signal above) will
 		# be called sometime later to let us know if it's supported or not.
 		webxr_interface.is_session_supported("immersive-vr")
-		if webxr_interface.is_passthrough_enabled():
-			webxr_interface.start_passthrough()
  
  
 func _webxr_session_supported(session_mode: String, supported: bool) -> void:
@@ -33,7 +31,7 @@ func _webxr_session_supported(session_mode: String, supported: bool) -> void:
 func _on_button_pressed() -> void:
 	# We want an immersive VR session, as opposed to AR ('immersive-ar') or a
 	# simple 3DoF viewer ('viewer').
-	webxr_interface.session_mode = 'immersive-ar'
+	webxr_interface.session_mode = 'immersive-vr'
 	# 'bounded-floor' is room scale, 'local-floor' is a standing or sitting
 	# experience (it puts you 1.6m above the ground if you have 3DoF headset),
 	# whereas as 'local' puts you down at the ARVROrigin.
@@ -53,11 +51,16 @@ func _on_button_pressed() -> void:
 	if not webxr_interface.initialize():
 		OS.alert("Failed to initialize WebXR")
 		return
+
  
 func _webxr_session_started() -> void:
 	$CanvasLayer.visible = false
+	var viewport = get_viewport()
 	# This tells Godot to start rendering to the headset.
-	get_viewport().use_xr = true
+	viewport.use_xr = true
+	viewport.transparent_bg = true
+	if webxr_interface.is_passthrough_enabled():
+		webxr_interface.start_passthrough()
 	# This will be the reference space type you ultimately got, out of the
 	# types that you requested above. This is useful if you want the game to
 	# work a little differently in 'bounded-floor' versus 'local-floor'.
