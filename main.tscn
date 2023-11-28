@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://cn4vn3k2w8eas"]
+
+[ext_resource type="Script" path="res://Main.gd" id="1_sdsq7"]
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_sdsq7")
+
+[node name="XROrigin3D" type="XROrigin3D" parent="."]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Button" type="Button" parent="CanvasLayer"]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "hello"
