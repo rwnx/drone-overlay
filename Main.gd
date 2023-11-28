@@ -15,21 +15,13 @@ func _ready() -> void:
 		webxr_interface.session_ended.connect(self._webxr_session_ended)
 		webxr_interface.session_failed.connect(self._webxr_session_failed)
  
-		webxr_interface.select.connect(self._webxr_on_select)
-		webxr_interface.selectstart.connect(self._webxr_on_select_start)
-		webxr_interface.selectend.connect(self._webxr_on_select_end)
- 
-		webxr_interface.squeeze.connect(self._webxr_on_squeeze)
-		webxr_interface.squeezestart.connect(self._webxr_on_squeeze_start)
-		webxr_interface.squeezeend.connect(self._webxr_on_squeeze_end)
- 
 		# This returns immediately - our _webxr_session_supported() method
 		# (which we connected to the "session_supported" signal above) will
 		# be called sometime later to let us know if it's supported or not.
 		webxr_interface.is_session_supported("immersive-vr")
+		if webxr_interface.is_passthrough_enabled():
+			webxr_interface.start_passthrough()
  
-	$XROrigin3D/LeftController.button_pressed.connect(self._on_left_controller_button_pressed)
-	$XROrigin3D/LeftController.button_released.connect(self._on_left_controller_button_released)
  
 func _webxr_session_supported(session_mode: String, supported: bool) -> void:
 	if session_mode == 'immersive-vr':
@@ -41,7 +33,7 @@ func _webxr_session_supported(session_mode: String, supported: bool) -> void:
 func _on_button_pressed() -> void:
 	# We want an immersive VR session, as opposed to AR ('immersive-ar') or a
 	# simple 3DoF viewer ('viewer').
-	webxr_interface.session_mode = 'immersive-vr'
+	webxr_interface.session_mode = 'immersive-ar'
 	# 'bounded-floor' is room scale, 'local-floor' is a standing or sitting
 	# experience (it puts you 1.6m above the ground if you have 3DoF headset),
 	# whereas as 'local' puts you down at the ARVROrigin.
@@ -80,35 +72,8 @@ func _webxr_session_ended() -> void:
 func _webxr_session_failed(message: String) -> void:
 	OS.alert("Failed to initialize: " + message)
  
-func _on_left_controller_button_pressed(button: String) -> void:
-	print ("Button pressed: " + button)
- 
-func _on_left_controller_button_released(button: String) -> void:
-	print ("Button release: " + button)
- 
 func _process(_delta: float) -> void:
 	var thumbstick_vector: Vector2 = $XROrigin3D/LeftController.get_vector2("thumbstick")
 	if thumbstick_vector != Vector2.ZERO:
 		print ("Left thumbstick position: " + str(thumbstick_vector))
  
-func _webxr_on_select(input_source_id: int) -> void:
-	print("Select: " + str(input_source_id))
- 
-	var tracker: XRPositionalTracker = webxr_interface.get_input_source_tracker(input_source_id)
-	var xform = tracker.get_pose('default').transform
-	print (xform.origin)
- 
-func _webxr_on_select_start(input_source_id: int) -> void:
-	print("Select Start: " + str(input_source_id))
- 
-func _webxr_on_select_end(input_source_id: int) -> void:
-	print("Select End: " + str(input_source_id))
- 
-func _webxr_on_squeeze(input_source_id: int) -> void:
-	print("Squeeze: " + str(input_source_id))
- 
-func _webxr_on_squeeze_start(input_source_id: int) -> void:
-	print("Squeeze Start: " + str(input_source_id))
- 
-func _webxr_on_squeeze_end(input_source_id: int) -> void:
-	print("Squeeze End: " + str(input_source_id))
