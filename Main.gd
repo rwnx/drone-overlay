@@ -1,6 +1,7 @@
 extends Node3D
  
 var webxr_interface
+var session_mode = "immersive-vr"
  
 func _ready() -> void:
 	$CanvasLayer.visible = false
@@ -14,24 +15,27 @@ func _ready() -> void:
 		webxr_interface.session_started.connect(self._webxr_session_started)
 		webxr_interface.session_ended.connect(self._webxr_session_ended)
 		webxr_interface.session_failed.connect(self._webxr_session_failed)
+		
+		get_viewport().transparent_bg = true
+		webxr_interface.start_passthrough()
+		
  
 		# This returns immediately - our _webxr_session_supported() method
 		# (which we connected to the "session_supported" signal above) will
 		# be called sometime later to let us know if it's supported or not.
-		webxr_interface.is_session_supported("immersive-vr")
+		webxr_interface.is_session_supported(session_mode)
  
  
 func _webxr_session_supported(session_mode: String, supported: bool) -> void:
-	if session_mode == 'immersive-vr':
-		if supported:
-			$CanvasLayer.visible = true
-		else:
-			OS.alert("Your browser doesn't support VR")
+	if supported:
+		$CanvasLayer.visible = true
+	else:
+		OS.alert("Your browser doesn't support VR")
  
 func _on_button_pressed() -> void:
 	# We want an immersive VR session, as opposed to AR ('immersive-ar') or a
 	# simple 3DoF viewer ('viewer').
-	webxr_interface.session_mode = 'immersive-vr'
+	webxr_interface.session_mode = session_mode
 	# 'bounded-floor' is room scale, 'local-floor' is a standing or sitting
 	# experience (it puts you 1.6m above the ground if you have 3DoF headset),
 	# whereas as 'local' puts you down at the ARVROrigin.
@@ -58,9 +62,7 @@ func _webxr_session_started() -> void:
 	var viewport = get_viewport()
 	# This tells Godot to start rendering to the headset.
 	viewport.use_xr = true
-	viewport.transparent_bg = true
-	if webxr_interface.is_passthrough_enabled():
-		webxr_interface.start_passthrough()
+
 	# This will be the reference space type you ultimately got, out of the
 	# types that you requested above. This is useful if you want the game to
 	# work a little differently in 'bounded-floor' versus 'local-floor'.
@@ -76,7 +78,5 @@ func _webxr_session_failed(message: String) -> void:
 	OS.alert("Failed to initialize: " + message)
  
 func _process(_delta: float) -> void:
-	var thumbstick_vector: Vector2 = $XROrigin3D/LeftController.get_vector2("thumbstick")
-	if thumbstick_vector != Vector2.ZERO:
-		print ("Left thumbstick position: " + str(thumbstick_vector))
+	pass
  
