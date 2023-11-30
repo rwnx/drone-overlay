@@ -14,8 +14,4 @@ script = ExtResource("1_sdsq7")
 [node name="Button" type="Button" parent="CanvasLayer"]
 offset_right = 56.0
 offset_bottom = 31.0
-text = "hello3"
-
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.142802, 0.260564, -3.16487)
-size = Vector3(0.854065, 1, 1)
+text = "Start"

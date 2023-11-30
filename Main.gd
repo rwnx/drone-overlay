@@ -1,11 +1,14 @@
 extends Node3D
  
 var webxr_interface
-var session_mode = "immersive-vr"
+var session_mode = "immersive-ar"
+var enable_passthrough
+var initialized
  
 func _ready() -> void:
 	$CanvasLayer.visible = false
 	$CanvasLayer/Button.pressed.connect(self._on_button_pressed)
+	get_viewport().transparent_bg = true
  
 	webxr_interface = XRServer.find_interface("WebXR")
 	if webxr_interface:
@@ -15,9 +18,6 @@ func _ready() -> void:
 		webxr_interface.session_started.connect(self._webxr_session_started)
 		webxr_interface.session_ended.connect(self._webxr_session_ended)
 		webxr_interface.session_failed.connect(self._webxr_session_failed)
-		
-		get_viewport().transparent_bg = true
-		webxr_interface.start_passthrough()
 		
  
 		# This returns immediately - our _webxr_session_supported() method
@@ -47,21 +47,22 @@ func _on_button_pressed() -> void:
 	# mark the features as required or optional.
 	webxr_interface.required_features = 'local-floor'
 	webxr_interface.optional_features = 'bounded-floor'
- 
+	
+	initialized = webxr_interface.initialize()
+	
 	# This will return false if we're unable to even request the session,
 	# however, it can still fail asynchronously later in the process, so we
 	# only know if it's really succeeded or failed when our
 	# _webxr_session_started() or _webxr_session_failed() methods are called.
-	if not webxr_interface.initialize():
+	if not initialized:
 		OS.alert("Failed to initialize WebXR")
 		return
 
  
 func _webxr_session_started() -> void:
 	$CanvasLayer.visible = false
-	var viewport = get_viewport()
 	# This tells Godot to start rendering to the headset.
-	viewport.use_xr = true
+	get_viewport().use_xr = true
 
 	# This will be the reference space type you ultimately got, out of the
 	# types that you requested above. This is useful if you want the game to

@@ -13,12 +13,18 @@ config_version=5
 config/name="drone-overlay"
 run/main_scene="res://main.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
+boot_splash/bg_color=Color(0.141176, 0.141176, 0.141176, 1)
 config/icon="res://icon.svg"
 
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/coi_serviceworker/plugin.cfg")
 
+[rendering]
+
+environment/defaults/default_clear_color=Color(0.301961, 0.301961, 0.301961, 0)
+
 [xr]
 
+openxr/enabled=true
 shaders/enabled=true
