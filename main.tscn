@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cn4vn3k2w8eas"]
+[gd_scene load_steps=11 format=3 uid="uid://cn4vn3k2w8eas"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_sdsq7"]
 [ext_resource type="Script" path="res://hud.gd" id="2_d8fim"]
@@ -28,14 +28,6 @@ shader = ExtResource("2_phoic")
 shader_parameter/transparent_color = Color(0, 0, 0, 1)
 shader_parameter/pickup_range = 0.324
 shader_parameter/fade_amount = 1.0
-
-[sub_resource type="Gradient" id="Gradient_i3qno"]
-interpolation_mode = 1
-colors = PackedColorArray(1, 0, 0, 1, 1, 0, 0, 0.0941176)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_gl84w"]
-gradient = SubResource("Gradient_i3qno")
-use_hdr = true
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_sdsq7")
@@ -109,8 +101,3 @@ size_flags_vertical = 6
 stream = ExtResource("5_yy4n7")
 autoplay = true
 expand = true
-
-[node name="Sprite2D" type="Sprite2D" parent="HudViewport/HudCanvas"]
-position = Vector2(572.5, 323.25)
-scale = Vector2(4.49609, 647.5)
-texture = SubResource("GradientTexture1D_gl84w")
