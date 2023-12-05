@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://e7mc26ff1xaj"]
+
+[ext_resource type="Script" path="res://worldhud/worldhud.gd" id="1_ls4rv"]
+[ext_resource type="Texture2D" uid="uid://iboklfj6xqge" path="res://Screenshot 2023-12-05 at 21.11.12.png" id="2_dv1h0"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+script = ExtResource("1_ls4rv")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(1, 0, 1, 0.494118)
+antialiased = true
+polygon = PackedVector2Array(0, -1, 13, 538, 514, 526, 502, 7)
+
+[node name="Screenshot2023-12-05At21_11_12" type="Sprite2D" parent="."]
+position = Vector2(248, 262)
+texture = ExtResource("2_dv1h0")

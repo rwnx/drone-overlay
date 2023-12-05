@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dhbc8ndidc23h"]
+
+[ext_resource type="Script" path="res://camerahud/camerahud.gd" id="1_d06ms"]
+[ext_resource type="Texture2D" uid="uid://iboklfj6xqge" path="res://Screenshot 2023-12-05 at 21.11.12.png" id="2_s1io7"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+script = ExtResource("1_d06ms")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0, 1, 1, 0.172549)
+polygon = PackedVector2Array(5, 2, 51, 564, 444, 546, 460, 262, 332, 262, 466, 166, 475, 34)
+vertex_colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="Screenshot2023-12-05At21_11_12" type="Sprite2D" parent="."]
+position = Vector2(428, 234)
+texture = ExtResource("2_s1io7")

@@ -1,31 +1,34 @@
-[gd_scene load_steps=10 format=3 uid="uid://cn4vn3k2w8eas"]
+[gd_scene load_steps=12 format=3 uid="uid://cn4vn3k2w8eas"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_sdsq7"]
-[ext_resource type="Script" path="res://LevelHud.gd" id="3_rlt6s"]
-[ext_resource type="PackedScene" uid="uid://dhbc8ndidc23h" path="res://tracker-hud.tscn" id="3_u1b0a"]
+[ext_resource type="Script" path="res://Camera.gd" id="3_rlt6s"]
+[ext_resource type="PackedScene" uid="uid://dhbc8ndidc23h" path="res://camerahud/camerahud.tscn" id="3_u1b0a"]
+[ext_resource type="PackedScene" uid="uid://e7mc26ff1xaj" path="res://worldhud/worldhud.tscn" id="5_a152f"]
 [ext_resource type="PackedScene" uid="uid://ctltchlf2j2r4" path="res://addons/xr-simulator/XRSimulator.tscn" id="5_apr0f"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1ba4l"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c66di"]
-transparency = 1
-shading_mode = 0
-albedo_color = Color(1, 0, 1, 0.407843)
+[sub_resource type="ViewportTexture" id="ViewportTexture_ktpdo"]
+viewport_path = NodePath("CameraHudViewport")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_4a8t3"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lsvbm"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2tqr"]
 resource_local_to_scene = true
 transparency = 1
-blend_mode = 1
 shading_mode = 0
-disable_ambient_light = true
-albedo_color = Color(0, 1, 1, 0.4)
-detail_mask = SubResource("ViewportTexture_4a8t3")
+albedo_texture = SubResource("ViewportTexture_ktpdo")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_r4ho3"]
+viewport_path = NodePath("WorldHudViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ep540"]
+resource_local_to_scene = true
+transparency = 1
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_r4ho3")
 
 [sub_resource type="Environment" id="Environment_txvoj"]
-background_mode = 2
-background_color = Color(0.862745, 0, 0.631373, 1)
+background_color = Color(1, 1, 1, 1)
+background_energy_multiplier = 1.42
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_sdsq7")
@@ -38,7 +41,6 @@ material = SubResource("StandardMaterial3D_1ba4l")
 xr_origin = NodePath("../XROrigin3D")
 
 [node name="MenuCanvas" type="CanvasLayer" parent="."]
-layer = 9
 follow_viewport_enabled = true
 
 [node name="Button" type="Button" parent="MenuCanvas"]
@@ -61,23 +63,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.560257, 0)
 current = true
 
 [node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1.7, 0.870196)
+transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 2.08165e-12, 1.7, 0.870196)
 current = true
 fov = 99.9
 near = 0.001
 script = ExtResource("3_rlt6s")
 
 [node name="CameraHud" type="CSGBox3D" parent="XROrigin3D/XRCamera3D"]
-transform = Transform3D(-0.668378, 1.50996e-07, 3.48786e-16, -1.00922e-07, -1, -3.48787e-16, 2.33121e-16, -3.48787e-16, 1, -0.00151753, 0, -0.1)
-flip_faces = true
-size = Vector3(0.422702, 0.230119, 0.001)
-material = SubResource("StandardMaterial3D_c66di")
+transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, -0.0403084, 0.0331068, -0.613194)
+size = Vector3(1.26929, 0.822527, 0.001)
+material = SubResource("StandardMaterial3D_h2tqr")
 
 [node name="WorldHud" type="CSGBox3D" parent="XROrigin3D/XRCamera3D"]
-transform = Transform3D(-0.668378, 1.3411e-07, 3.48786e-16, -8.9407e-08, -1, -3.48787e-16, 2.33121e-16, -3.48787e-16, 1, -0.0015175, 0, -0.129825)
-flip_faces = true
-size = Vector3(0.422702, 0.230119, 0.001)
-material = SubResource("StandardMaterial3D_lsvbm")
+transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, -0.00363723, -0.00169611, -0.766909)
+size = Vector3(1.39746, 0.845415, 0.001)
+material = SubResource("StandardMaterial3D_ep540")
 
 [node name="LeftHand" type="XRController3D" parent="XROrigin3D"]
 tracker = &"left_hand"
@@ -88,11 +88,16 @@ tracker = &"right_hand"
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_txvoj")
 
-[node name="HudViewport" type="SubViewport" parent="."]
+[node name="CameraHudViewport" type="SubViewport" parent="."]
 transparent_bg = true
 size_2d_override_stretch = true
 
-[node name="HudCanvas" parent="HudViewport" instance=ExtResource("3_u1b0a")]
+[node name="Node2D" parent="CameraHudViewport" instance=ExtResource("3_u1b0a")]
+
+[node name="WorldHudViewport" type="SubViewport" parent="."]
+transparent_bg = true
+
+[node name="Node2D" parent="WorldHudViewport" instance=ExtResource("5_a152f")]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.67842, 0)
