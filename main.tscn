@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://cn4vn3k2w8eas"]
+[gd_scene load_steps=15 format=3 uid="uid://cn4vn3k2w8eas"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_sdsq7"]
 [ext_resource type="Script" path="res://Camera.gd" id="3_rlt6s"]
 [ext_resource type="PackedScene" uid="uid://dhbc8ndidc23h" path="res://camerahud/camerahud.tscn" id="3_u1b0a"]
 [ext_resource type="PackedScene" uid="uid://e7mc26ff1xaj" path="res://worldhud/worldhud.tscn" id="5_a152f"]
 [ext_resource type="PackedScene" uid="uid://ctltchlf2j2r4" path="res://addons/xr-simulator/XRSimulator.tscn" id="5_apr0f"]
+[ext_resource type="PackedScene" uid="uid://blhtl17rjialu" path="res://horizon_hud.tscn" id="6_30500"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1ba4l"]
 
@@ -25,6 +26,15 @@ resource_local_to_scene = true
 transparency = 1
 shading_mode = 0
 albedo_texture = SubResource("ViewportTexture_r4ho3")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_3gv6n"]
+viewport_path = NodePath("WorldHudViewport2")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iwehj"]
+resource_local_to_scene = true
+transparency = 1
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_3gv6n")
 
 [sub_resource type="Environment" id="Environment_txvoj"]
 background_color = Color(1, 1, 1, 1)
@@ -70,14 +80,19 @@ near = 0.001
 script = ExtResource("3_rlt6s")
 
 [node name="CameraHud" type="CSGBox3D" parent="XROrigin3D/XRCamera3D"]
-transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, -0.0403084, 0.0331068, -0.613194)
+transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, -0.0403084, 0.0331068, -0.510845)
 size = Vector3(1.26929, 0.822527, 0.001)
 material = SubResource("StandardMaterial3D_h2tqr")
 
 [node name="WorldHud" type="CSGBox3D" parent="XROrigin3D/XRCamera3D"]
-transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, -0.00363723, -0.00169611, -0.766909)
+transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, -0.00363723, -0.00169611, -0.501613)
 size = Vector3(1.39746, 0.845415, 0.001)
 material = SubResource("StandardMaterial3D_ep540")
+
+[node name="HorizonHud" type="CSGBox3D" parent="XROrigin3D/XRCamera3D"]
+transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 0.13772, -0.00169611, -0.515366)
+size = Vector3(2.39819, 0.845415, 0.001)
+material = SubResource("StandardMaterial3D_iwehj")
 
 [node name="LeftHand" type="XRController3D" parent="XROrigin3D"]
 tracker = &"left_hand"
@@ -98,6 +113,11 @@ size_2d_override_stretch = true
 transparent_bg = true
 
 [node name="Node2D" parent="WorldHudViewport" instance=ExtResource("5_a152f")]
+
+[node name="WorldHudViewport2" type="SubViewport" parent="."]
+transparent_bg = true
+
+[node name="CanvasLayer" parent="WorldHudViewport2" instance=ExtResource("6_30500")]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.67842, 0)
